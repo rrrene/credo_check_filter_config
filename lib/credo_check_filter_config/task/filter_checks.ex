@@ -30,23 +30,23 @@ defmodule CredoCheckFilterConfig.Task.FilterChecks do
   end
 
   defp get_check_tuples_for_raised_issues(exec, all_issues) do
-    {all_check_tuples, _, _} = Execution.checks(exec)
     all_issues_checks = all_issues |> Enum.map(& &1.check) |> Enum.uniq()
+    {all_check_tuples, _, _} = Execution.checks(exec)
 
     Enum.filter(all_check_tuples, fn {check, _params} ->
       Enum.member?(all_issues_checks, check)
     end)
   end
 
-  defp ignored_by_exluded_param?(issue, checks) do
-    params =
-      Enum.find_value(checks, fn {check, params} ->
+  defp ignored_by_exluded_param?(issue, check_tuples) do
+    check_params =
+      Enum.find_value(check_tuples, fn {check, params} ->
         if issue.check == check do
           params
         end
       end)
 
-    params[:excluded]
+    check_params[:excluded]
     |> List.wrap()
     |> Enum.any?(&String.match?(issue.filename, &1))
   end

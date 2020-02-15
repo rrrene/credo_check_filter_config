@@ -10,8 +10,10 @@ defmodule CredoCheckFilterConfig.Task.ReportFilteredChecks do
         "credo_check_filter_config.ignored_issue_count"
       )
 
-    if ignored_issue_count > 0 do
-      Credo.CLI.Output.UI.puts([:faint, "#{ignored_issue_count} issues were filtered."])
+    case ignored_issue_count do
+      0 -> nil
+      1 -> Credo.CLI.Output.UI.puts([:faint, "1 issue was filtered."])
+      count -> Credo.CLI.Output.UI.puts([:faint, "#{count} issues were filtered."])
     end
 
     exec

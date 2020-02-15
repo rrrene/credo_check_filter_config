@@ -5,12 +5,12 @@ defmodule CredoCheckFilterConfig do
     exec
     |> append_task(
       Credo.CLI.Command.Suggest.SuggestCommand,
-      :determine_issues,
+      :filter_issues,
       CredoCheckFilterConfig.Task.FilterChecks
     )
     |> append_task(
       Credo.CLI.Command.Suggest.SuggestCommand,
-      :print_issues,
+      :print_after_analysis,
       CredoCheckFilterConfig.Task.ReportFilteredChecks
     )
 
